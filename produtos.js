@@ -19,5 +19,12 @@ const produtos = [
   imagem: "imagens/sagrada-familia.png",
   descricao: "Uma imagem delicada da Sagrada Família para decorar seu lar e acompanhar seus momentos de fé e oração.",
   link: "https://s.shopee.com.br/4qF6VsHRSV"
+},
+  {
+  nome: "Crucifixo de Madeira com São Bento",
+  categoria: "Fé & Presentes",
+  imagem: "imagens/crucifixo-sao-bento.png",
+  descricao: "Um crucifixo de madeira para trazer a fé e a proteção de São Bento para o seu lar.",
+  link: "https://s.shopee.com.br/6q0AtsoHcw"
 }
 ];
