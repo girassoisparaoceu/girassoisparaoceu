@@ -1,323 +1,138 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manual Bíblico | Girassóis Para o Céu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Achadinhos do Girassóis para o Céu — produtos que florescem com propósito.">
+  <title>Girassóis para o Céu | Achadinhos</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --girassol:      #D9A520;
-      --girassol-deep: #B8860F;
-      --girassol-pale: #F0DDA0;
-      --verde:         #68704A;
-      --verde-deep:    #4C5236;
-      --verde-pale:    #E4E7DA;
-      --terra:         #745A42;
-      --dourado:       #C5A35A;
-      --creme:         #F8F2E4;
-      --altar:         #FFFDF8;
-
-      --card-bg:   var(--altar);
-      --text-dark: #3A3226;
-      --text-mid:  #7A6F5C;
-      --text-light:#A99C87;
-      --border:    rgba(104,112,74,0.14);
-    }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--creme);
-      color: var(--text-dark);
-      font-family: 'DM Sans', sans-serif;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content:'';
-      position: fixed; top:-140px; left:50%; transform: translateX(-50%);
-      width:640px; height:420px;
-      background: radial-gradient(ellipse at top, rgba(217,165,32,0.14) 0%, transparent 70%);
-      pointer-events:none; z-index:0;
-    }
-
-    /* ─── HERO / PERFIL ─── */
-    .hero {
-      position: relative; overflow: hidden;
-      padding: 40px 24px 34px;
-      background: linear-gradient(150deg, var(--verde-deep) 0%, var(--verde) 55%, var(--girassol) 130%);
-      border-bottom-left-radius: 36px; border-bottom-right-radius: 36px;
-      box-shadow: 0 12px 40px rgba(76,82,54,0.32);
-      color: white;
-    }
-    .hero-ray {
-      position:absolute; top:-70px; left:50%; transform:translateX(-50%);
-      width:260px; height:260px; border-radius:50%;
-      background: radial-gradient(circle, rgba(240,221,160,0.25) 0%, transparent 70%);
-      pointer-events:none;
-    }
-    .perfil { display:flex; align-items:center; gap:16px; position:relative; z-index:1; }
-    .avatar-ring {
-      width:72px; height:72px; border-radius:50%; padding:3px;
-      background: linear-gradient(135deg, var(--girassol-pale), var(--girassol-deep));
-      flex-shrink:0; box-shadow: 0 8px 24px rgba(184,134,15,0.4);
-    }
-    .avatar-ring img { width:100%; height:100%; border-radius:50%; object-fit:cover; border:3px solid var(--altar); background:var(--altar); }
-    .perfil-info h1 { font-family:'Playfair Display', serif; font-size:24px; font-weight:600; line-height:1.1; }
-    .perfil-info .handle { margin-top:4px; font-size:12px; opacity:.85; font-weight:300; }
-    .bio-tag {
-      margin-top:16px; font-family:'Cormorant Garamond', serif; font-style:italic;
-      font-size:15px; opacity:.92; position:relative; z-index:1;
-    }
-
-    /* ─── PRODUTO HERO ─── */
-    .product-hero {
-      padding: 40px 24px 8px; text-align:center; position:relative; z-index:1;
-    }
-    .eyebrow {
-      display:inline-flex; align-items:center; gap:6px;
-      background: var(--girassol-pale); color: var(--girassol-deep);
-      padding: 5px 14px; border-radius: 999px; font-size:11px; font-weight:700;
-      letter-spacing: 0.06em; text-transform:uppercase;
-    }
-    .product-hero h2 {
-      margin-top:16px; font-family:'Playfair Display', serif; font-weight:700;
-      font-size:32px; line-height:1.15; color: var(--verde-deep);
-    }
-    .product-hero h2 em { font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500; color: var(--girassol-deep); }
-    .product-hero p.sub {
-      margin-top:12px; font-size:15px; color: var(--text-mid); line-height:1.6;
-      max-width: 480px; margin-left:auto; margin-right:auto;
-    }
-
-    .cta-wrap { padding: 20px 24px 6px; text-align:center; }
-    .cta-btn {
-      display:inline-block; width:100%; max-width: 420px;
-      background: linear-gradient(135deg, var(--girassol), var(--girassol-deep));
-      color:white; text-decoration:none; font-weight:700; font-size:16px;
-      padding: 17px 24px; border-radius:16px; letter-spacing:0.01em;
-      box-shadow: 0 10px 28px rgba(184,134,15,0.35);
-      transition: transform .18s, box-shadow .18s;
-    }
-    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(184,134,15,0.42); }
-    .cta-note { margin-top:10px; font-size:12px; color: var(--text-light); }
-
-    /* ─── PERGUNTAS QUE O PRODUTO RESPONDE ─── */
-    .section { padding: 40px 24px 8px; }
-    .section-title {
-      font-family:'Playfair Display', serif; font-size:26px; font-weight:600;
-      color: var(--verde-deep); text-align:center; margin-bottom: 18px;
-    }
-    .section-title em { font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500; color: var(--girassol-deep); }
-
-    .questions {
-      display:flex; flex-direction:column; gap:12px; max-width:520px; margin:0 auto;
-    }
-    .question-card {
-      background: var(--card-bg); border:1px solid var(--border); border-radius:16px;
-      padding:16px 18px; font-size:14px; line-height:1.55; color: var(--text-dark);
-      box-shadow: 0 4px 14px rgba(76,82,54,0.06);
-      display:flex; gap:10px; align-items:flex-start;
-    }
-    .question-card .q-icon { font-size:18px; flex-shrink:0; }
-
-    /* ─── FEATURES / CONTEÚDO ─── */
-    .features {
-      display:grid; grid-template-columns: repeat(2, 1fr); gap:14px;
-      max-width: 640px; margin: 0 auto;
-    }
-    .feature-card {
-      background: var(--card-bg); border:1px solid var(--border); border-radius:18px;
-      padding:18px 16px; box-shadow: 0 4px 16px rgba(76,82,54,0.07);
-    }
-    .feature-card .f-icon {
-      width:40px; height:40px; border-radius:12px; display:flex; align-items:center;
-      justify-content:center; font-size:19px; margin-bottom:10px;
-      background: var(--verde-pale);
-    }
-    .feature-card h3 {
-      font-family:'Playfair Display', serif; font-size:15px; font-weight:600;
-      color: var(--text-dark); margin-bottom:6px; line-height:1.25;
-    }
-    .feature-card p { font-size:12px; color: var(--text-mid); line-height:1.55; font-weight:300; }
-
-    /* ─── INCLUSO ─── */
-    .includes {
-      max-width:520px; margin:0 auto; display:flex; flex-direction:column; gap:10px;
-    }
-    .include-item {
-      display:flex; align-items:center; gap:10px; font-size:14px; color: var(--text-dark);
-      background: var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:12px 16px;
-    }
-    .include-item .check {
-      color:white; background: var(--verde); width:22px; height:22px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0;
-    }
-
-    /* ─── PREÇO / CTA FINAL ─── */
-    .price-box {
-      max-width: 420px; margin: 30px auto 0; text-align:center;
-      background: linear-gradient(150deg, var(--verde-deep), var(--verde));
-      border-radius: 24px; padding: 30px 24px; color:white;
-      box-shadow: 0 16px 40px rgba(76,82,54,0.3); position:relative; overflow:hidden;
-    }
-    .price-box::before {
-      content:''; position:absolute; top:-50px; right:-50px; width:160px; height:160px;
-      border-radius:50%; background: rgba(217,165,32,0.18);
-    }
-    .price-box .p-eyebrow { font-size:12px; opacity:.85; letter-spacing:0.04em; position:relative; }
-    .price-box h3 {
-      font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500;
-      font-size:20px; margin-top:8px; position:relative;
-    }
-    .price-box .cta-btn { margin-top:18px; position:relative; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      margin-top: 44px;
-      background: linear-gradient(150deg, var(--verde-deep) 0%, #3A3E28 100%);
-      color: white; padding: 40px 24px 44px; text-align:center; position:relative; overflow:hidden;
-    }
-    footer::before {
-      content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px;
-      border-radius:50%; background: rgba(217,165,32,0.10);
-    }
-    footer h2 { font-family:'Playfair Display', serif; font-size:30px; font-weight:600; position:relative; }
-    footer h2 em { font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:500; color: var(--girassol-pale); }
-    footer .footer-tagline { margin-top:8px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:15px; opacity:.88; position:relative; }
-
-    .instagram-btn {
-      margin-top:20px; display:inline-flex; align-items:center; gap:10px;
-      background: linear-gradient(135deg, #833AB4, #C13584, #E1306C, #FD1D1D, #F77737);
-      padding:12px 20px; border-radius:16px; text-decoration:none; color:white;
-      font-weight:600; font-size:14px; box-shadow: 0 8px 22px rgba(0,0,0,0.2);
-    }
-
-    .affiliate-note {
-      margin-top:22px; background: rgba(255,253,248,0.08); border:1px solid rgba(255,253,248,0.14);
-      padding:15px 18px; border-radius:16px; font-size:12.5px; line-height:1.6;
-      color: rgba(255,253,248,0.85); position:relative; max-width:520px; margin-left:auto; margin-right:auto;
-    }
-    .copyright { margin-top:22px; font-size:11px; color: rgba(255,253,248,0.4); position:relative; }
-
-    @media (max-width: 380px) {
-      .features { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="Girassóis para o Céu - início">
+        <img src="imagens/logo-girassois.png" alt="Girassóis para o Céu">
+        <div class="brand-copy">
+          <strong>Girassóis</strong>
+          <span>para o Céu</span>
+        </div>
+      </a>
 
-  <!-- ── HERO / PERFIL ── -->
-  <section class="hero">
-    <div class="hero-ray"></div>
-    <div class="perfil">
-      <div class="avatar-ring">
-        <img src="logo-girassois.png" alt="Logo Girassóis Para o Céu">
-      </div>
-      <div class="perfil-info">
-        <h1>Girassóis Para o Céu</h1>
-        <div class="handle">@girassoisparaoceu</div>
-      </div>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#achadinhos">Achadinhos</a>
+        <a href="#sobre">Nosso propósito</a>
+      </nav>
     </div>
-    <div class="bio-tag">"Onde a fé floresce em direção ao Céu"</div>
-  </section>
+  </header>
 
-  <!-- ── PRODUTO HERO ── -->
-  <div class="product-hero">
-    <span class="eyebrow">🌻 Recomendo de coração</span>
-    <h2>Manual Bíblico: entenda a <em>Palavra</em> com clareza</h2>
-    <p class="sub">
-      O aplicativo de estudo que te ajuda a compreender o contexto histórico da Bíblia,
-      responder com segurança sobre sua fé e aprofundar seu conhecimento — no seu ritmo,
-      pelo celular, tablet ou computador.
-    </p>
-  </div>
+  <main>
+    <section class="hero">
+      <div class="hero-decoration hero-sun">✦</div>
+      <div class="hero-content">
+        <span class="eyebrow">🌻 achadinhos com propósito</span>
+        <h1>Coisas que você pode amar,<br><em>e um propósito que pode florescer.</em></h1>
+        <p>
+          Selecionamos produtos que encontramos pelo caminho para compartilhar
+          com você. Se algum deles fizer sentido, sua compra também ajuda a nossa caminhada.
+        </p>
 
-  <div class="cta-wrap">
-    <a class="cta-btn" href="https://pay.kiwify.com.br/bBAoBrp?afid=KrnJhJnk" target="_blank">Quero conhecer o Manual Bíblico 🌻</a>
-    <div class="cta-note">Pagamento único · acesso vitalício · compra 100% segura via Kiwify</div>
-  </div>
-
-  <!-- ── PERGUNTAS ── -->
-  <div class="section">
-    <div class="section-title">Isso já aconteceu <em>com você?</em></div>
-    <div class="questions">
-      <div class="question-card"><span class="q-icon">📖</span> Já leu a Bíblia e sentiu que não entendeu completamente o que Deus quis dizer ali?</div>
-      <div class="question-card"><span class="q-icon">🤔</span> Gostaria de ter alguém explicando os textos com mais clareza e profundidade?</div>
-      <div class="question-card"><span class="q-icon">🛡️</span> Sente que falta embasamento para defender sua fé em uma conversa ou debate?</div>
-    </div>
-  </div>
-
-  <!-- ── O QUE O APP ENTREGA ── -->
-  <div class="section">
-    <div class="section-title">O que você vai <em>encontrar</em></div>
-    <div class="features">
-      <div class="feature-card">
-        <div class="f-icon">🗺️</div>
-        <h3>Mapeamento do Antigo Testamento</h3>
-        <p>Visão panorâmica e cronológica, com a sabedoria por trás de cada trecho explicada de forma acessível.</p>
+        <a class="hero-button" href="#achadinhos">
+          Explorar achadinhos <span>↓</span>
+        </a>
       </div>
-      <div class="feature-card">
-        <div class="f-icon">🛡️</div>
-        <h3>Apologética aplicada</h3>
-        <p>Respostas diretas para os temas mais complexos, para você dialogar sobre sua fé com mais segurança.</p>
+    </section>
+
+    <section class="support-note" aria-label="Como sua compra ajuda">
+      <div class="note-icon">🌻</div>
+      <div>
+        <strong>Sua compra também floresce o nosso propósito.</strong>
+        <p>
+          Comprando pelo nosso link, você <b>não paga nada a mais</b> e ainda ajuda
+          o Girassóis para o Céu a continuar florescendo.
+        </p>
       </div>
-      <div class="feature-card">
-        <div class="f-icon">🌍</div>
-        <h3>Contexto histórico e cultural</h3>
-        <p>Entenda costumes, sociedade e cotidiano da época bíblica para uma leitura muito mais rica.</p>
+    </section>
+
+    <section class="catalog" id="achadinhos">
+      <div class="section-heading">
+        <span class="section-kicker">com carinho, selecionamos para você</span>
+        <h2>Achadinhos</h2>
+        <p>Encontre algo especial para você, para sua casa ou para alguém que ama.</p>
       </div>
-      <div class="feature-card">
-        <div class="f-icon">✝️</div>
-        <h3>Teologia aplicada</h3>
-        <p>Os pilares da fé cristã conectados de forma clara, sem enrolação, do jeito que faz sentido.</p>
+
+      <div class="catalog-tools">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="O que você está procurando?" autocomplete="off">
+          <button id="clearSearch" type="button" aria-label="Limpar busca">×</button>
+        </label>
+        <div class="category-list" id="categoryList" aria-label="Categorias"></div>
       </div>
+
+      <div class="results-meta">
+        <span id="resultsCount"></span>
+      </div>
+
+      <div class="products-grid" id="productsGrid"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="empty-flower">🌻</div>
+        <h3>Nenhum achadinho encontrado</h3>
+        <p>Tente buscar por outro termo ou escolha uma categoria diferente.</p>
+        <button id="resetFilters" type="button">Limpar filtros</button>
+      </div>
+    </section>
+
+    <section class="purpose" id="sobre">
+      <div class="purpose-inner">
+        <div class="purpose-flower">🌻</div>
+        <div>
+          <span class="section-kicker">por trás de cada clique</span>
+          <h2>Sua compra também floresce o nosso propósito</h2>
+          <p>
+            O Girassóis para o Céu nasceu de um sonho, de uma fé e do desejo de
+            compartilhar aquilo que nos aproxima de Deus. E, por trás deste projeto,
+            existe também uma história que estamos construindo juntos.
+          </p>
+          <p>
+            Os produtos que você encontra aqui possuem <strong>links de afiliados</strong>.
+            Se você gostar de algum produto e realizar a compra através do nosso link,
+            podemos receber uma pequena comissão.
+          </p>
+          <p>
+            <strong>Você não paga absolutamente nada a mais por isso.</strong>
+            Para nós, porém, cada compra representa uma pequena ajuda para continuarmos
+            cuidando deste projeto e caminhando em direção ao nosso propósito:
+            construir nossa vida juntos e realizar nosso sonho de casamento,
+            colocando Deus à frente de cada passo.
+          </p>
+          <p>
+            Se algum produto daqui fizer sentido para você, comprar através do nosso
+            link é uma forma simples de apoiar a nossa caminhada.
+          </p>
+          <p class="purpose-thanks">
+            Obrigada por estar aqui, por apoiar o nosso trabalho e por fazer parte dessa história. 🤍
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <img src="imagens/logo-girassois.png" alt="" class="footer-logo">
+    <div>
+      <strong>Girassóis para o Céu</strong>
+      <p>Onde a fé floresce em direção ao Céu.</p>
+      <small>© <span id="year"></span> Girassóis para o Céu. Todos os direitos reservados.</small>
     </div>
-  </div>
-
-  <!-- ── O QUE ESTÁ INCLUSO ── -->
-  <div class="section">
-    <div class="section-title">O que está <em>incluso</em></div>
-    <div class="includes">
-      <div class="include-item"><span class="check">✓</span> Acesso vitalício — pagamento único, sem mensalidade</div>
-      <div class="include-item"><span class="check">✓</span> Uso simultâneo em smartphone, tablet e computador</div>
-      <div class="include-item"><span class="check">✓</span> Atualizações futuras inclusas, sem custo extra</div>
-      <div class="include-item"><span class="check">✓</span> Suporte técnico disponível antes, durante e depois da compra</div>
-      <div class="include-item"><span class="check">✓</span> Funciona online, com sincronização automática dos seus dados</div>
-    </div>
-  </div>
-
-  <!-- ── PREÇO / CTA FINAL ── -->
-  <div class="price-box">
-    <div class="p-eyebrow">🌻 GIRASSÓIS PARA O CÉU RECOMENDA</div>
-    <h3>"Que a Palavra floresça em você como a fé floresce em direção ao Céu."</h3>
-    <a class="cta-btn" href="https://pay.kiwify.com.br/bBAoBrp?afid=KrnJhJnk" target="_blank">Garantir meu acesso agora</a>
-  </div>
-
-  <!-- ── FOOTER ── -->
-  <footer>
-    <h2>Girassóis <em>Para o Céu</em></h2>
-    <p class="footer-tagline">Onde a fé floresce em direção ao Céu</p>
-
-    <a class="instagram-btn" href="https://instagram.com/girassoisparaoceu" target="_blank">
-      <span>📸</span> @girassoisparaoceu
-    </a>
-
-    <div class="affiliate-note">
-      🌻 Este é um link de afiliada: ao comprar através dele, você não paga nada a mais,
-      e uma parte do valor ajuda o Girassóis Para o Céu a continuar florescendo.
-      Obrigada pelo carinho e apoio!
-    </div>
-
-    <div class="copyright">© Girassóis Para o Céu 2026 · Todos os direitos reservados</div>
   </footer>
 
+  <script src="produtos.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
