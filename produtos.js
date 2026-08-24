@@ -5,5 +5,12 @@ const produtos = [
     imagem: "imagens/terco-casal.jpg",
     descricao: "Um terço especial para representar a fé, o amor e a caminhada a dois.",
     link: "https://s.shopee.com.br/8AVYRkuleV"
-  }
+  },
+  {
+  nome: "Luminária Nossa Senhora Aparecida",
+  categoria: "Fé & Presentes",
+  imagem: "imagens/luminaria-nossa-senhora.png",
+  descricao: "Uma peça delicada para iluminar seu cantinho de oração e trazer a fé para a decoração.",
+  link: "https://s.shopee.com.br/3B6sWU5T4z"
+}
 ];
