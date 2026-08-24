@@ -33,13 +33,17 @@ const produtos = [
   ----------------------------------------------------------
   */
 
+const produtos = [
+
   {
-    nome: "Bíblia de Estudo",
-    categoria: "Livros",
-    imagem: "imagens/biblia-estudo.jpg",
-    descricao: "Uma linda opção para estudo da Palavra.",
-    link: "SEU_LINK_DE_AFILIADO_SHOPEE"
-  },
+    nome: "Terço de Madeira para Casal",
+    categoria: "Fé & Presentes",
+    imagem: "imagens/terco-casal.avif",
+    descricao: "Um terço especial para representar a fé, o amor e a caminhada a dois.",
+    link: "https://s.shopee.com.br/8AVYRkuleV"
+  }
+
+];
 
 
   /*
