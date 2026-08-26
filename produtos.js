@@ -33,5 +33,12 @@ const produtos = [
   imagem: "imagens/vela-girassol.png",
   descricao: "Uma vela delicada com formato de girassol para deixar o ambiente mais acolhedor, perfumado e especial.",
   link: "https://s.shopee.com.br/3VjkezLHu5"
+},
+  {
+  nome: "Anel Girassol Você é Meu Sol",
+  categoria: "Fé & Presentes",
+  imagem: "imagens/anel-girassol-meu-sol.png",
+  descricao: "Um anel delicado com girassol e mensagem especial, perfeito para presentear alguém que ilumina seus dias.",
+  link: "https://s.shopee.com.br/AUtV0OphkA"
 }
 ];
