@@ -54,5 +54,12 @@ const produtos = [
   imagem: "imagens/biblia-ave-maria.png",
   descricao: "Uma Bíblia especial para acompanhar seus momentos de oração, leitura e encontro com a Palavra de Deus.",
   link: "https://s.shopee.com.br/20uxTpZjfe"
+},
+  {
+  nome: "Camiseta São Miguel Arcanjo",
+  categoria: "Moda & Fé",
+  imagem: "imagens/camiseta-arcanjo-miguel.png",
+  descricao: "Camiseta com estampa do Arcanjo Miguel e uma mensagem especial de fé e proteção.",
+  link: "https://s.shopee.com.br/W6Ac7pK4h"
 }
 ];
