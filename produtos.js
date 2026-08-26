@@ -47,5 +47,12 @@ const produtos = [
   imagem: "imagens/terco-girassol.png",
   descricao: "Um terço delicado de madeira com detalhes de girassol, perfeito para momentos de oração ou para presentear alguém especial.",
   link: "https://s.shopee.com.br/9KhYCmGgF0"
+},
+  {
+  nome: "Bíblia Sagrada Ave-Maria",
+  categoria: "Fé & Presentes",
+  imagem: "imagens/biblia-ave-maria.png",
+  descricao: "Uma Bíblia especial para acompanhar seus momentos de oração, leitura e encontro com a Palavra de Deus.",
+  link: "https://s.shopee.com.br/20uxTpZjfe"
 }
 ];
