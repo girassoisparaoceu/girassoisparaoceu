@@ -26,5 +26,12 @@ const produtos = [
   imagem: "imagens/crucifixo-sao-bento.png",
   descricao: "Um crucifixo de madeira para trazer a fé e a proteção de São Bento para o seu lar.",
   link: "https://s.shopee.com.br/6q0AtsoHcw"
+},
+  {
+  nome: "Vela Aromática Flor de Girassol",
+  categoria: "Casa & Bem-estar",
+  imagem: "imagens/vela-girassol.png",
+  descricao: "Uma vela delicada com formato de girassol para deixar o ambiente mais acolhedor, perfumado e especial.",
+  link: "https://s.shopee.com.br/3VjkezLHu5"
 }
 ];
