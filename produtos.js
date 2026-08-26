@@ -40,5 +40,12 @@ const produtos = [
   imagem: "imagens/anel-girassol-meu-sol.png",
   descricao: "Um anel delicado com girassol e mensagem especial, perfeito para presentear alguém que ilumina seus dias.",
   link: "https://s.shopee.com.br/AUtV0OphkA"
+},
+  {
+  nome: "Terço de Madeira com Girassol",
+  categoria: "Fé & Presentes",
+  imagem: "imagens/terco-girassol.png",
+  descricao: "Um terço delicado de madeira com detalhes de girassol, perfeito para momentos de oração ou para presentear alguém especial.",
+  link: "https://s.shopee.com.br/9KhYCmGgF0"
 }
 ];
