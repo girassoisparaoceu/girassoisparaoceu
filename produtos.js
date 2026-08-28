@@ -61,5 +61,12 @@ const produtos = [
   imagem: "imagens/camiseta-arcanjo-miguel.png",
   descricao: "Camiseta com estampa do Arcanjo Miguel e uma mensagem especial de fé e proteção.",
   link: "https://s.shopee.com.br/W6Ac7pK4h"
+},
+  {
+  nome: "Kit com 15 Potes Organizadores para Alimentos",
+  categoria: "Casa & Organização",
+  imagem: "imagens/kit-potes-organizadores.png",
+  descricao: "Kit com 15 potes para organizar alimentos e deixar sua cozinha mais prática e organizada.",
+  link: "https://s.shopee.com.br/7fZMnJTmD6"
 }
 ];
