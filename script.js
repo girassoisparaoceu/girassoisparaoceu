@@ -1,358 +1,62 @@
-const grid = document.getElementById("productsGrid");
-const categoryList = document.getElementById("categoryList");
-const searchInput = document.getElementById("searchInput");
-const clearSearch = document.getElementById("clearSearch");
-const resultsCount = document.getElementById("resultsCount");
-const emptyState = document.getElementById("emptyState");
-const resetFilters = document.getElementById("resetFilters");
+const API_URL = "https://script.google.com/macros/s/AKfycbxMbo5pc6gPJdjelCCTlrZAUbhhu9GgCKDaoHipIje-XcWTcmCKzxmGTuu7YeGkqd1P/exec";
 
-let categoriaAtual = "Todos";
+// Atualiza o ano no rodapé
+document.getElementById('year').textContent = new Date().getFullYear();
 
+let todosProdutos = [];
 
-/* =========================================================
-   NORMALIZA TEXTO
-   Remove acentos e transforma em minúsculas.
-   Isso permite buscar, por exemplo:
-   "bíblia" ou "biblia"
-   ========================================================= */
-
-function normalizar(texto = "") {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+// Função que busca os dados da planilha
+async function carregarProdutosDaPlanilha() {
+  const grid = document.getElementById('productsGrid');
+  
+  try {
+    const resposta = await fetch(API_URL);
+    todosProdutos = await resposta.json();
+    
+    // Limpa a mensagem de "Carregando..."
+    grid.innerHTML = '';
+    
+    renderizarProdutos(todosProdutos);
+    
+  } catch (erro) {
+    console.error("Erro ao carregar os achadinhos:", erro);
+    grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Ocorreu um erro ao carregar os produtos. Tente recarregar a página.</p>';
+  }
 }
 
-
-/* =========================================================
-   PROTEÇÃO CONTRA HTML
-   Evita que textos cadastrados nos produtos
-   sejam interpretados como código HTML.
-   ========================================================= */
-
-function escapeHtml(texto = "") {
-  return String(texto)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-/* =========================================================
-   CRIA AS CATEGORIAS AUTOMATICAMENTE
-   As categorias são retiradas do produtos.js.
-   ========================================================= */
-
-function criarCategorias() {
-
-  const categorias = [
-    ...new Set(
-      produtos
-        .map(produto => produto.categoria)
-        .filter(Boolean)
-    )
-  ].sort((a, b) =>
-    a.localeCompare(b, "pt-BR")
-  );
-
-
-  categoryList.innerHTML = [
-
-    `<button
-      class="category-button active"
-      data-category="Todos">
-      Todos
-    </button>`,
-
-    ...categorias.map(categoria => `
-
-      <button
-        class="category-button"
-        data-category="${escapeHtml(categoria)}">
-
-        ${escapeHtml(categoria)}
-
-      </button>
-
-    `)
-
-  ].join("");
-
-
-  /* Eventos dos botões */
-
-  categoryList
-    .querySelectorAll(".category-button")
-    .forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        categoriaAtual =
-          button.dataset.category;
-
-
-        categoryList
-          .querySelectorAll(".category-button")
-          .forEach(botao => {
-
-            botao.classList.remove("active");
-
-          });
-
-
-        button.classList.add("active");
-
-
-        renderizar();
-
-      });
-
-    });
-
-}
-
-
-/* =========================================================
-   FILTRA OS PRODUTOS
-   ========================================================= */
-
-function produtosFiltrados() {
-
-  const termo =
-    normalizar(
-      searchInput.value.trim()
-    );
-
-
-  return produtos.filter(produto => {
-
-    const categoriaOk =
-      categoriaAtual === "Todos" ||
-      produto.categoria === categoriaAtual;
-
-
-    const textoProduto =
-      normalizar(`
-        ${produto.nome}
-        ${produto.categoria || ""}
-        ${produto.descricao || ""}
-      `);
-
-
-    const buscaOk =
-      !termo ||
-      textoProduto.includes(termo);
-
-
-    return categoriaOk && buscaOk;
-
-  });
-
-}
-
-
-/* =========================================================
-   RENDERIZA OS PRODUTOS
-   ========================================================= */
-
-function renderizar() {
-
-  const lista =
-    produtosFiltrados();
-
-
-  /* Contador */
-
-  resultsCount.textContent =
-    `${lista.length} ${
-      lista.length === 1
-        ? "achadinho encontrado"
-        : "achadinhos encontrados"
-    }`;
-
-
-  /* Se não houver produtos */
-
-  if (lista.length === 0) {
-
-    grid.innerHTML = "";
-
-    grid.hidden = true;
-
-    emptyState.hidden = false;
-
-    return;
-
+// Função para montar o HTML de cada produto na tela
+function renderizarProdutos(produtos) {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = ''; // Limpa a grade antes de renderizar
+  
+  if(produtos.length === 0) {
+     document.getElementById('emptyState').hidden = false;
+     return;
+  } else {
+     document.getElementById('emptyState').hidden = true;
   }
 
-
-  grid.hidden = false;
-
-  emptyState.hidden = true;
-
-
-  /* Cria os cards */
-
-  grid.innerHTML = lista.map(produto => `
-
-    <article class="product-card">
-
-      <img
-        class="product-image"
-        src="${escapeHtml(produto.imagem)}"
-        alt="${escapeHtml(produto.nome)}"
-        loading="lazy"
-      >
-
-      <div class="product-content">
-
-        <div class="product-category">
-          ${escapeHtml(
-            produto.categoria || "Achadinho"
-          )}
-        </div>
-
-
-        <h3 class="product-title">
-          ${escapeHtml(produto.nome)}
-        </h3>
-
-
-        <p class="product-description">
-          ${escapeHtml(
-            produto.descricao || ""
-          )}
-        </p>
-
-
-        <a
-          class="product-link"
-          href="${escapeHtml(produto.link)}"
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-        >
-
-          Ver na Shopee
-
-          <span>↗</span>
-
+  produtos.forEach(produto => {
+    // Cria o card do produto. 
+    // Adapte as classes CSS abaixo (como 'product-card', 'product-image') conforme o seu style.css
+    const produtoEl = document.createElement('article');
+    produtoEl.className = 'product-card'; 
+    
+    produtoEl.innerHTML = `
+      <img src="${produto.imagem}" alt="${produto.nome}" class="product-image" loading="lazy">
+      <div class="product-info">
+        <span class="product-category">${produto.categoria}</span>
+        <h3 class="product-title">${produto.nome}</h3>
+        <p class="product-desc">${produto.descricao}</p>
+        <a href="${produto.link}" target="_blank" rel="noopener noreferrer" class="product-link">
+          Ver na loja <span>↗</span>
         </a>
-
       </div>
-
-    </article>
-
-  `).join("");
-
+    `;
+    
+    grid.appendChild(produtoEl);
+  });
 }
 
-
-/* =========================================================
-   BOTÃO DE LIMPAR BUSCA
-   ========================================================= */
-
-function atualizarBotaoLimpar() {
-
-  clearSearch.style.display =
-    searchInput.value
-      ? "block"
-      : "none";
-
-}
-
-
-/* =========================================================
-   BUSCA EM TEMPO REAL
-   ========================================================= */
-
-searchInput.addEventListener(
-  "input",
-  () => {
-
-    atualizarBotaoLimpar();
-
-    renderizar();
-
-  }
-);
-
-
-/* =========================================================
-   LIMPAR BUSCA
-   ========================================================= */
-
-clearSearch.addEventListener(
-  "click",
-  () => {
-
-    searchInput.value = "";
-
-    atualizarBotaoLimpar();
-
-    renderizar();
-
-    searchInput.focus();
-
-  }
-);
-
-
-/* =========================================================
-   RESETAR FILTROS
-   ========================================================= */
-
-resetFilters.addEventListener(
-  "click",
-  () => {
-
-    searchInput.value = "";
-
-    categoriaAtual = "Todos";
-
-
-    categoryList
-      .querySelectorAll(".category-button")
-      .forEach(button => {
-
-        button.classList.toggle(
-          "active",
-          button.dataset.category === "Todos"
-        );
-
-      });
-
-
-    atualizarBotaoLimpar();
-
-    renderizar();
-
-  }
-);
-
-
-/* =========================================================
-   ANO AUTOMÁTICO DO RODAPÉ
-   ========================================================= */
-
-const yearElement =
-  document.getElementById("year");
-
-if (yearElement) {
-
-  yearElement.textContent =
-    new Date().getFullYear();
-
-}
-
-
-/* =========================================================
-   INICIALIZAÇÃO
-   ========================================================= */
-
-criarCategorias();
-
-atualizarBotaoLimpar();
-
-renderizar();
+// Inicia o carregamento assim que a página abre
+carregarProdutosDaPlanilha();
