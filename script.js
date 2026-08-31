@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxMbo5pc6gPJdjelCCTlrZAUbhhu9GgCKDaoHipIje-XcWTcmCKzxmGTuu7YeGkqd1P/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz1ZBE8fHeQpF4w8tn85nbhLpn_YOpa_Leg5tm53NoISLOOxM7oTnnZDekWJlb0TIVU/exec";
 
 // Atualiza o ano no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
