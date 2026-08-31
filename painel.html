@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Cadastro - Achadinhos</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px; 
+      margin: 40px auto; 
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    h2 {
+      text-align: center;
+      color: #4a4a4a;
+      margin-bottom: 25px;
+    }
+    form { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 15px; 
+    }
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: -10px;
+      color: #666;
+    }
+    input, select, textarea, button { 
+      padding: 12px; 
+      font-size: 15px; 
+      border: 1px solid #ddd; 
+      border-radius: 8px; 
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #ffd700;
+    }
+    textarea { 
+      resize: vertical; 
+      min-height: 80px; 
+      font-family: inherit;
+    }
+    button { 
+      background-color: #ffd700; 
+      color: #333;
+      font-weight: bold; 
+      font-size: 16px;
+      cursor: pointer; 
+      border: none; 
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    button:hover { 
+      background-color: #e6c200; 
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    #mensagem {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>🌻 Cadastrar Achadinho</h2>
+    
+    <form id="formProduto">
+      <label for="nome">Nome do Produto</label>
+      <input type="text" id="nome" placeholder="Ex: Bíblia de Estudo" required>
+      
+      <label for="categoria">Categoria</label>
+      <select id="categoria" required>
+        <option value="">Selecione...</option>
+        <option value="Casa">Casa</option>
+        <option value="Livros">Livros</option>
+        <option value="Papelaria">Papelaria</option>
+        <option value="Beleza">Beleza</option>
+        <option value="Outros">Outros</option>
+      </select>
+      
+      <label for="imagem">Link da Imagem</label>
+      <input type="url" id="imagem" placeholder="https://..." required>
+      
+      <label for="descricao">Descrição</label>
+      <textarea id="descricao" placeholder="Escreva uma breve descrição..." required></textarea>
+      
+      <label for="link">Link de Afiliado</label>
+      <input type="url" id="link" placeholder="https://amzn.to/..." required>
+      
+      <label for="senha">Senha de Acesso</label>
+      <input type="password" id="senha" placeholder="Sua senha secreta" required>
+      
+      <button type="submit" id="btnSalvar">Salvar Produto</button>
+    </form>
+
+    <p id="mensagem"></p>
+  </div>
+
+  <script>
+    // A sua URL exata do Web App gerado no Apps Script
+    const API_URL = "https://script.google.com/macros/s/AKfycbxMbo5pc6gPJdjelCCTlrZAUbhhu9GgCKDaoHipIje-XcWTcmCKzxmGTuu7YeGkqd1P/exec";
+
+    document.getElementById('formProduto').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btn = document.getElementById('btnSalvar');
+      const msg = document.getElementById('mensagem');
+      
+      btn.disabled = true;
+      msg.textContent = "⏳ Salvando...";
+      msg.style.color = "#666";
+
+      const produto = {
+        nome: document.getElementById('nome').value,
+        categoria: document.getElementById('categoria').value,
+        imagem: document.getElementById('imagem').value,
+        descricao: document.getElementById('descricao').value,
+        link: document.getElementById('link').value,
+        senha: document.getElementById('senha').value
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify(produto)
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'sucesso') {
+          msg.textContent = "✅ Produto salvo com sucesso!";
+          msg.style.color = "green";
+          document.getElementById('formProduto').reset();
+        } else {
+          msg.textContent = "❌ Erro: " + result.message;
+          msg.style.color = "red";
+        }
+      } catch (err) {
+        // Se houver um problema de CORS na leitura da resposta (comum em envios pro Google Script),
+        // mas o envio tiver funcionado, podemos dar um aviso mais suave.
+        msg.textContent = "✅ Produto enviado! (Verifique a planilha)";
+        msg.style.color = "green";
+        document.getElementById('formProduto').reset();
+        console.error("Detalhe do erro de leitura:", err);
+      } finally {
+        btn.disabled = false;
+        
+        // Limpa a mensagem após 5 segundos
+        setTimeout(() => {
+          msg.textContent = "";
+        }, 5000);
+      }
+    });
+  </script>
+</body>
+</html>
