@@ -3,60 +3,136 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxMbo5pc6gPJdjelCCTlrZA
 // Atualiza o ano no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
 
-let todosProdutos = [];
+// Elementos do DOM
+const grid = document.getElementById('productsGrid');
+const categoryList = document.getElementById('categoryList');
+const searchInput = document.getElementById('searchInput');
+const clearSearchBtn = document.getElementById('clearSearch');
+const resultsCount = document.getElementById('resultsCount');
+const emptyState = document.getElementById('emptyState');
+const resetFiltersBtn = document.getElementById('resetFilters');
 
-// Função que busca os dados da planilha
-async function carregarProdutosDaPlanilha() {
-  const grid = document.getElementById('productsGrid');
-  
+// Estado da aplicação
+let todosProdutos = [];
+let categoriaAtiva = 'Todas';
+let termoBusca = '';
+
+// 1. Busca os produtos na planilha
+async function carregarProdutos() {
   try {
     const resposta = await fetch(API_URL);
     todosProdutos = await resposta.json();
     
-    // Limpa a mensagem de "Carregando..."
-    grid.innerHTML = '';
+    // Extrai categorias únicas e cria os botões
+    renderizarCategorias();
     
-    renderizarProdutos(todosProdutos);
+    // Renderiza os produtos filtrados (inicialmente todos)
+    filtrarERenderizar();
     
   } catch (erro) {
     console.error("Erro ao carregar os achadinhos:", erro);
-    grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Ocorreu um erro ao carregar os produtos. Tente recarregar a página.</p>';
+    grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Ocorreu um erro ao carregar os produtos. Atualize a página e tente novamente.</p>';
   }
 }
 
-// Função para montar o HTML de cada produto na tela
-function renderizarProdutos(produtos) {
-  const grid = document.getElementById('productsGrid');
-  grid.innerHTML = ''; // Limpa a grade antes de renderizar
+// 2. Cria os botões de categoria baseados nos produtos que vieram da planilha
+function renderizarCategorias() {
+  // Pega todas as categorias e remove duplicatas
+  const categoriasUnicas = ['Todas', ...new Set(todosProdutos.map(p => p.categoria))];
   
-  if(produtos.length === 0) {
-     document.getElementById('emptyState').hidden = false;
-     return;
+  categoryList.innerHTML = '';
+  
+  categoriasUnicas.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.textContent = cat;
+    btn.className = cat === categoriaAtiva ? 'active' : '';
+    
+    btn.addEventListener('click', () => {
+      // Atualiza botões ativos
+      document.querySelectorAll('#categoryList button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      categoriaAtiva = cat;
+      filtrarERenderizar();
+    });
+    
+    categoryList.appendChild(btn);
+  });
+}
+
+// 3. Filtra os produtos por texto e categoria, e desenha na tela
+function filtrarERenderizar() {
+  const produtosFiltrados = todosProdutos.filter(produto => {
+    const bateCategoria = categoriaAtiva === 'Todas' || produto.categoria === categoriaAtiva;
+    
+    const termo = termoBusca.toLowerCase();
+    const bateBusca = produto.nome.toLowerCase().includes(termo) || 
+                      produto.descricao.toLowerCase().includes(termo);
+                      
+    return bateCategoria && bateBusca;
+  });
+  
+  // Atualiza contador
+  resultsCount.textContent = `${produtosFiltrados.length} ${produtosFiltrados.length === 1 ? 'achadinho' : 'achadinhos'}`;
+  
+  // Limpa a tela
+  grid.innerHTML = '';
+  
+  // Mostra Empty State se não achar nada
+  if (produtosFiltrados.length === 0) {
+    emptyState.hidden = false;
+    return;
   } else {
-     document.getElementById('emptyState').hidden = true;
+    emptyState.hidden = true;
   }
 
-  produtos.forEach(produto => {
-    // Cria o card do produto. 
-    // Adapte as classes CSS abaixo (como 'product-card', 'product-image') conforme o seu style.css
-    const produtoEl = document.createElement('article');
-    produtoEl.className = 'product-card'; 
+  // Desenha os cards
+  produtosFiltrados.forEach(produto => {
+    const article = document.createElement('article');
+    article.className = 'product-card'; 
     
-    produtoEl.innerHTML = `
+    article.innerHTML = `
       <img src="${produto.imagem}" alt="${produto.nome}" class="product-image" loading="lazy">
       <div class="product-info">
         <span class="product-category">${produto.categoria}</span>
         <h3 class="product-title">${produto.nome}</h3>
         <p class="product-desc">${produto.descricao}</p>
         <a href="${produto.link}" target="_blank" rel="noopener noreferrer" class="product-link">
-          Ver na loja <span>↗</span>
+          Ver achadinho <span>↗</span>
         </a>
       </div>
     `;
     
-    grid.appendChild(produtoEl);
+    grid.appendChild(article);
   });
 }
 
-// Inicia o carregamento assim que a página abre
-carregarProdutosDaPlanilha();
+// 4. Eventos de Busca
+searchInput.addEventListener('input', (e) => {
+  termoBusca = e.target.value;
+  clearSearchBtn.style.display = termoBusca.length > 0 ? 'block' : 'none';
+  filtrarERenderizar();
+});
+
+clearSearchBtn.addEventListener('click', () => {
+  termoBusca = '';
+  searchInput.value = '';
+  clearSearchBtn.style.display = 'none';
+  filtrarERenderizar();
+});
+
+resetFiltersBtn.addEventListener('click', () => {
+  termoBusca = '';
+  searchInput.value = '';
+  clearSearchBtn.style.display = 'none';
+  categoriaAtiva = 'Todas';
+  
+  document.querySelectorAll('#categoryList button').forEach(b => {
+    b.classList.toggle('active', b.textContent === 'Todas');
+  });
+  
+  filtrarERenderizar();
+});
+
+// Inicia o app
+carregarProdutos();
