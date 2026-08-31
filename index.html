@@ -78,7 +78,13 @@
         <span id="resultsCount"></span>
       </div>
 
-      <div class="products-grid" id="productsGrid"></div>
+      <!-- Adicionado um texto de carregamento inicial -->
+      <div class="products-grid" id="productsGrid">
+        <div id="loadingMessage" style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #666;">
+          <span style="display: block; font-size: 24px; margin-bottom: 10px;">🌻</span>
+          Carregando achadinhos...
+        </div>
+      </div>
 
       <div class="empty-state" id="emptyState" hidden>
         <div class="empty-flower">🌻</div>
@@ -132,7 +138,7 @@
     </div>
   </footer>
 
-  <script src="produtos.js"></script>
+  <!-- Script produtos.js removido. Agora usamos apenas o script.js com a API -->
   <script src="script.js"></script>
 </body>
 </html>
