@@ -13,7 +13,7 @@
     }
     .container {
       max-width: 500px; 
-      margin: 40px auto; 
+      margin: 20px auto; 
       background: #fff;
       padding: 30px;
       border-radius: 12px;
@@ -44,16 +44,16 @@
       transition: border-color 0.3s;
     }
     input:focus, select:focus, textarea:focus {
-      border-color: #ffd700;
+      border-color: #d4a34b;
     }
     textarea { 
       resize: vertical; 
       min-height: 80px; 
       font-family: inherit;
     }
-    button { 
-      background-color: #ffd700; 
-      color: #333;
+    .btn-submit { 
+      background-color: #d4a34b; 
+      color: #fff;
       font-weight: bold; 
       font-size: 16px;
       cursor: pointer; 
@@ -61,10 +61,10 @@
       margin-top: 10px;
       transition: background-color 0.3s;
     }
-    button:hover { 
-      background-color: #e6c200; 
+    .btn-submit:hover { 
+      background-color: #b88a38; 
     }
-    button:disabled {
+    .btn-submit:disabled, .btn-ia:disabled {
       background-color: #ccc;
       cursor: not-allowed;
     }
@@ -73,6 +73,34 @@
       margin-top: 20px;
       font-weight: bold;
     }
+    
+    /* Estilo da caixa de IA */
+    .ia-box {
+      background: #f0f8ff; 
+      padding: 15px; 
+      border-radius: 8px; 
+      margin-bottom: 25px; 
+      border: 1px dashed #bfdbfe;
+    }
+    .ia-box label {
+      color: #3b82f6; 
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .btn-ia {
+      background: #3b82f6; 
+      color: white; 
+      width: 100%;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-ia:hover {
+      background: #2563eb;
+    }
   </style>
 </head>
 <body>
@@ -80,22 +108,33 @@
   <div class="container">
     <h2>🌻 Cadastrar Achadinho</h2>
     
+    <!-- MÓDULO DE INTELIGÊNCIA ARTIFICIAL -->
+    <div class="ia-box">
+      <label for="imagemIA">🤖 Preenchimento Automático com IA</label>
+      <span style="display: block; font-size: 12px; color: #666; margin-bottom: 12px;">
+        Anexe um print do produto. A IA vai preencher o Nome, Categoria e Descrição sozinha!
+      </span>
+      <input type="file" id="imagemIA" accept="image/*" style="background: white; width: 100%; box-sizing: border-box;">
+      <button type="button" id="btnLerImagem" class="btn-ia">✨ Analisar Imagem e Preencher</button>
+    </div>
+    
+    <!-- FORMULÁRIO PRINCIPAL -->
     <form id="formProduto">
       <label for="nome">Nome do Produto</label>
       <input type="text" id="nome" placeholder="Ex: Bíblia de Estudo" required>
       
       <label for="categoria">Categoria</label>
-<select id="categoria" required>
-  <option value="">Selecione...</option>
-  <option value="Devoção">Devoção</option>
-  <option value="Casa">Casa</option>
-  <option value="Utilidades">Utilidades</option>
-  <option value="Acessórios">Acessórios</option>
-  <option value="Presentes">Presentes</option>
-    <option value="Moda">Moda</option>
-</select>
-
-      <label for="imagem">Link da Imagem</label>
+      <select id="categoria" required>
+        <option value="">Selecione...</option>
+        <option value="Devoção">Devoção</option>
+        <option value="Casa">Casa</option>
+        <option value="Utilidades">Utilidades</option>
+        <option value="Acessórios">Acessórios</option>
+        <option value="Presentes">Presentes</option>
+           <option value="Moda">Moda</option>
+      </select>
+      
+      <label for="imagem">Link da Imagem (URL da Loja)</label>
       <input type="url" id="imagem" placeholder="https://..." required>
       
       <label for="descricao">Descrição</label>
@@ -104,18 +143,103 @@
       <label for="link">Link de Afiliado</label>
       <input type="url" id="link" placeholder="https://amzn.to/..." required>
       
-      <label for="senha">Senha de Acesso</label>
+      <label for="senha">Senha de Acesso da Planilha</label>
       <input type="password" id="senha" placeholder="Sua senha secreta" required>
       
-      <button type="submit" id="btnSalvar">Salvar Produto</button>
+      <button type="submit" id="btnSalvar" class="btn-submit">Salvar Produto na Planilha</button>
     </form>
 
     <p id="mensagem"></p>
   </div>
 
   <script>
-    // A sua URL exata do Web App gerado no Apps Script
-const API_URL = "https://script.google.com/macros/s/AKfycbz1ZBE8fHeQpF4w8tn85nbhLpn_YOpa_Leg5tm53NoISLOOxM7oTnnZDekWJlb0TIVU/exec";
+    // ==========================================
+    // 1. LÓGICA DA IA (GEMINI) PARA LER A IMAGEM
+    // ==========================================
+    document.getElementById('btnLerImagem').addEventListener('click', async () => {
+      const fileInput = document.getElementById('imagemIA');
+      const btnLer = document.getElementById('btnLerImagem');
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert("Por favor, selecione uma imagem ou tire um print do produto primeiro!");
+        return;
+      }
+
+      let apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) {
+        apiKey = prompt("Cole sua NOVA chave de API do Google Gemini aqui:\n(Ela ficará salva no seu navegador)");
+        if (apiKey) localStorage.setItem('gemini_api_key', apiKey);
+        else return;
+      }
+
+      btnLer.textContent = "⏳ Analisando imagem (aguarde uns segundos)...";
+      btnLer.disabled = true;
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      
+      reader.onloadend = async () => {
+        const base64String = reader.result.split(',')[1];
+        
+        const promptText = `
+          Analise a imagem deste produto e retorne os dados no formato JSON exato abaixo. 
+          Regras: 
+          1. 'nome': crie um título curto e comercial para o produto.
+          2. 'categoria': escolha OBRIGATORIAMENTE uma destas opções exatas: "Devoção", "Casa", "Utilidades", "Acessórios" ou "Presentes".
+          3. 'descricao': crie uma descrição curta, afetiva, delicada (máx 2 frases) para um site cristão chamado 'Girassóis para o Céu'.
+          
+          Retorne APENAS um JSON válido, sem texto antes ou depois, sem aspas triplas de formatação markdown.
+          Exemplo: {"nome": "Terço de Madeira", "categoria": "Devoção", "descricao": "Um lindo terço..."}
+        `;
+
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [
+                  { text: promptText },
+                  { inlineData: { mimeType: file.type, data: base64String } }
+                ]
+              }]
+            })
+          });
+
+          const data = await response.json();
+
+          if (data.error) {
+            alert("Erro na IA: " + data.error.message);
+            if (data.error.code === 400) localStorage.removeItem('gemini_api_key'); 
+          } else {
+            let textoResposta = data.candidates[0].content.parts[0].text;
+            textoResposta = textoResposta.replace(/```json/g, "").replace(/```/g, "").trim();
+            
+            const produtoAnalisado = JSON.parse(textoResposta);
+
+            document.getElementById('nome').value = produtoAnalisado.nome || "";
+            document.getElementById('categoria').value = produtoAnalisado.categoria || "";
+            document.getElementById('descricao').value = produtoAnalisado.descricao || "";
+            
+            alert("✨ Mágica feita! Campos preenchidos com sucesso. Agora só falta colocar os links.");
+          }
+        } catch (err) {
+          alert("Erro ao processar. Tente uma imagem mais leve ou verifique se a chave API está correta.");
+          console.error(err);
+        } finally {
+          btnLer.textContent = "✨ Analisar Imagem e Preencher";
+          btnLer.disabled = false;
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    });
+
+    // ==========================================
+    // 2. LÓGICA PARA SALVAR NA PLANILHA
+    // ==========================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbz1ZBE8fHeQpF4w8tn85nbhLpn_YOpa_Leg5tm53NoISLOOxM7oTnnZDekWJlb0TIVU/exec";
+
     document.getElementById('formProduto').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -123,7 +247,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz1ZBE8fHeQpF4w8tn85nbh
       const msg = document.getElementById('mensagem');
       
       btn.disabled = true;
-      msg.textContent = "⏳ Salvando...";
+      msg.textContent = "⏳ Salvando na planilha...";
       msg.style.color = "#666";
 
       const produto = {
@@ -147,27 +271,22 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz1ZBE8fHeQpF4w8tn85nbh
         const result = await response.json();
 
         if (result.status === 'sucesso') {
-          msg.textContent = "✅ Produto salvo com sucesso!";
+          msg.textContent = "✅ Achadinho salvo com sucesso!";
           msg.style.color = "green";
           document.getElementById('formProduto').reset();
+          document.getElementById('imagemIA').value = ""; // Limpa a imagem anexada também
         } else {
           msg.textContent = "❌ Erro: " + result.message;
           msg.style.color = "red";
         }
       } catch (err) {
-        // Se houver um problema de CORS na leitura da resposta (comum em envios pro Google Script),
-        // mas o envio tiver funcionado, podemos dar um aviso mais suave.
         msg.textContent = "✅ Produto enviado! (Verifique a planilha)";
         msg.style.color = "green";
         document.getElementById('formProduto').reset();
-        console.error("Detalhe do erro de leitura:", err);
+        document.getElementById('imagemIA').value = "";
       } finally {
         btn.disabled = false;
-        
-        // Limpa a mensagem após 5 segundos
-        setTimeout(() => {
-          msg.textContent = "";
-        }, 5000);
+        setTimeout(() => { msg.textContent = ""; }, 5000);
       }
     });
   </script>
