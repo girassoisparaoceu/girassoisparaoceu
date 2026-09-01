@@ -1,31 +1,322 @@
-/* Container das categorias */
-.category-list {
-  display: flex;
-  flex-wrap: nowrap; /* Impede que os botões caiam para a linha de baixo */
-  gap: 12px;
-  overflow-x: auto; /* Permite deslizar os botões para o lado no celular */
-  padding-bottom: 8px; /* Dá um respiro para o scroll */
-  margin-bottom: 20px;
-  
-  /* Oculta a barra de rolagem visual para um design mais limpo */
-  -ms-overflow-style: none;  /* IE e Edge */
-  scrollbar-width: none;  /* Firefox */
+/* =========================================
+   VARIÁVEIS E RESET
+   ========================================= */
+:root {
+  /* Paleta de Cores baseada no print */
+  --color-primary: #d4a34b; /* Dourado dos botões e destaques */
+  --color-primary-hover: #b88a38;
+  --color-heading: #5d644f; /* Verde-oliva escuro dos títulos */
+  --color-text: #555555;
+  --color-text-light: #777777;
+  --color-bg: #fcfcf9; /* Fundo off-white principal */
+  --color-bg-alt: #f4f2eb; /* Fundo alternativo mais quentinho */
+  --color-white: #ffffff;
+  --color-border: #eaeaea;
+
+  /* Fontes */
+  --font-heading: 'Playfair Display', 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
 }
 
-/* Oculta a barra de rolagem no Chrome, Safari e Opera */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* =========================================
+   CABEÇALHO (HEADER)
+   ========================================= */
+.site-header {
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-copy strong {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--color-heading);
+  font-weight: 700;
+}
+
+.brand-copy span {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  color: var(--color-primary);
+  font-style: italic;
+}
+
+.main-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.main-nav a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-heading);
+  transition: color 0.3s;
+}
+
+.main-nav a:hover {
+  color: var(--color-primary);
+}
+
+/* =========================================
+   HERO SECTION (TOPO)
+   ========================================= */
+.hero {
+  background-color: var(--color-bg-alt);
+  padding: 60px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-sun {
+  color: var(--color-primary);
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.hero-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  color: var(--color-heading);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.hero p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: var(--color-text);
+}
+
+.hero-button {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+.hero-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* =========================================
+   NOTA DE APOIO (SUPPORT NOTE)
+   ========================================= */
+.support-note {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.support-note .note-icon {
+  font-size: 30px;
+}
+
+.support-note strong {
+  display: block;
+  color: var(--color-heading);
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.support-note p {
+  font-size: 14px;
+}
+
+/* =========================================
+   CATÁLOGO / ACHADINHOS
+   ========================================= */
+.catalog {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-kicker {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.section-heading h2 {
+  font-family: var(--font-heading);
+  font-size: 42px;
+  color: var(--color-heading);
+  margin-bottom: 15px;
+}
+
+.section-heading p {
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   FERRAMENTAS (BUSCA E CATEGORIAS)
+   ========================================= */
+.catalog-tools {
+  margin-bottom: 30px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 5px 15px;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.search-box span {
+  color: var(--color-primary);
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  padding: 12px 0;
+  font-size: 16px;
+  outline: none;
+  font-family: inherit;
+  color: var(--color-text);
+  background: transparent;
+}
+
+#clearSearch {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ccc;
+  cursor: pointer;
+  display: none;
+}
+
+/* =========================================
+   LISTA DE CATEGORIAS (ESTILO PÍLULA)
+   ========================================= */
+.category-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .category-list::-webkit-scrollbar {
   display: none; 
 }
 
-/* Visual dos botões de categoria */
 .category-list button {
-  white-space: nowrap; /* Força o texto a ficar em uma única linha */
-  flex-shrink: 0; /* Impede que o botão seja "esmagado" na tela */
-  padding: 8px 20px;
-  border-radius: 50px; /* Deixa as bordas bem arredondadas (formato pílula) */
-  border: 1px solid #dcdcdc; /* Borda bem suave */
-  background-color: transparent;
-  color: #555;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  color: var(--color-text);
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
@@ -33,16 +324,256 @@
   transition: all 0.3s ease;
 }
 
-/* Efeito ao passar o mouse */
 .category-list button:hover {
-  background-color: #f9f9f9;
+  background-color: var(--color-bg-alt);
   border-color: #ccc;
 }
 
-/* Visual da categoria selecionada (ativa) */
 .category-list button.active {
-  background-color: #d4a34b; /* Cor baseada no botão "Ver achadinho" */
-  color: #ffffff;
-  border-color: #d4a34b;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
   font-weight: 600;
+}
+
+/* =========================================
+   GRID DE PRODUTOS
+   ========================================= */
+.results-meta {
+  font-size: 13px;
+  color: var(--color-text-light);
+  margin-bottom: 20px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+/* =========================================
+   CARDS DE PRODUTOS
+   ========================================= */
+.product-card {
+  background-color: var(--color-white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid var(--color-border);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+.product-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-category {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.product-title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  color: var(--color-heading);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.product-desc {
+  font-size: 14px;
+  color: var(--color-text);
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.product-link {
+  display: block;
+  text-align: center;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background-color 0.3s;
+  margin-top: auto;
+}
+
+.product-link span {
+  margin-left: 5px;
+}
+
+.product-link:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* =========================================
+   ESTADO VAZIO (NENHUM RESULTADO)
+   ========================================= */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  grid-column: 1 / -1;
+}
+
+.empty-flower {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  color: var(--color-heading);
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  margin-bottom: 20px;
+}
+
+#resetFilters {
+  background-color: var(--color-heading);
+  color: var(--color-white);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#resetFilters:hover {
+  background-color: #444a3a;
+}
+
+/* =========================================
+   SEÇÃO "NOSSO PROPÓSITO"
+   ========================================= */
+.purpose {
+  background-color: var(--color-bg-alt);
+  padding: 80px 20px;
+}
+
+.purpose-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.purpose-flower {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.purpose h2 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  color: var(--color-heading);
+  margin-bottom: 25px;
+}
+
+.purpose p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.purpose strong {
+  color: var(--color-heading);
+}
+
+.purpose-thanks {
+  margin-top: 30px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+/* =========================================
+   RODAPÉ (FOOTER)
+   ========================================= */
+.site-footer {
+  background-color: var(--color-white);
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 auto 15px auto;
+}
+
+.site-footer strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--color-heading);
+  margin-bottom: 5px;
+}
+
+.site-footer p {
+  font-size: 14px;
+  color: var(--color-primary);
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.site-footer small {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+/* =========================================
+   RESPONSIVO (CELULARES)
+   ========================================= */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+  
+  .section-heading h2 {
+    font-size: 32px;
+  }
+  
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+
+  .product-info {
+    padding: 15px;
+  }
+
+  .product-title {
+    font-size: 18px;
+  }
+  
+  .main-nav {
+    display: none; /* Oculta a navegação principal em telas muito pequenas para não quebrar o layout */
+  }
 }
