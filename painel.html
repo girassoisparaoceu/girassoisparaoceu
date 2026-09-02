@@ -48,12 +48,10 @@
     }
     textarea { 
       resize: vertical; 
-      min-height: 80px; 
+      min-height: 90px; 
       font-family: inherit;
     }
-    
-    /* Estilos dos Botões */
-    .btn-principal { 
+    button { 
       background-color: #ffd700; 
       color: #333;
       font-weight: bold; 
@@ -62,23 +60,16 @@
       border: none; 
       margin-top: 10px;
       transition: background-color 0.3s;
+      padding: 12px;
+      border-radius: 8px;
     }
-    .btn-principal:hover { background-color: #e6c200; }
-    .btn-principal:disabled { background-color: #ccc; cursor: not-allowed; }
-    
-    .btn-ia {
-      background-color: #f0f0f0;
-      color: #555;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      padding: 8px 12px;
-      margin-top: 5px;
-      align-self: flex-start;
+    button:hover { 
+      background-color: #e6c200; 
     }
-    .btn-ia:hover { background-color: #e4e4e4; }
-    
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
     #mensagem {
       text-align: center;
       margin-top: 20px;
@@ -96,26 +87,23 @@
       <label for="nome">Nome do Produto</label>
       <input type="text" id="nome" placeholder="Ex: Bíblia de Estudo Ave-Maria" required>
       
-      <label for="categoria">Categoria</label>
+            <label for="categoria">Categoria</label>
       <select id="categoria" required>
         <option value="">Selecione...</option>
-        <option value="Casa & Bem-estar">Casa & Bem-estar</option>
-        <option value="Fé & Presentes">Fé & Presentes</option>
-        <option value="Livros">Livros</option>
-        <option value="Papelaria">Papelaria</option>
-        <option value="Moda & Fé">Moda & Fé</option>
-        <option value="Casa & Organização">Casa & Organização</option>
-        <option value="Outros">Outros</option>
+        <option value="Devoção">Devoção</option>
+        <option value="Casa">Casa</option>
+        <option value="Presentes">Presentes</option>
+        <option value="Moda">Moda</option>
+        <option value="Utilidades">Utilidades</option>
+      </select>
+
       </select>
       
       <label for="imagem">Link da Imagem (URL da Loja)</label>
       <input type="url" id="imagem" placeholder="https://..." required>
       
       <label for="descricao">Descrição</label>
-      <textarea id="descricao" placeholder="Escreva uma breve descrição ou use a IA abaixo..." required></textarea>
-      
-      <!-- Botão da IA -->
-      <button type="button" class="btn-ia" onclick="gerarDescricaoIA()">✨ Gerar Descrição com IA</button>
+      <textarea id="descricao" placeholder="Escreva uma breve descrição do produto..." required></textarea>
       
       <label for="link">Link de Afiliado</label>
       <input type="url" id="link" placeholder="https://s.shopee.com.br/..." required>
@@ -123,87 +111,16 @@
       <label for="senha">Senha do Painel</label>
       <input type="password" id="senha" placeholder="Sua senha secreta da planilha" required>
       
-      <button type="submit" id="btnSalvar" class="btn-principal">Salvar Produto na Planilha</button>
+      <button type="submit" id="btnSalvar">Salvar Produto na Planilha</button>
     </form>
 
     <p id="mensagem"></p>
   </div>
 
   <script>
-    // ==========================================
-    // 1. CONFIGURAÇÕES (COLOQUE SUAS CHAVES AQUI)
-    // ==========================================
-    
     // Sua URL atualizada do Google Apps Script
     const API_URL = "https://script.google.com/macros/s/AKfycbz1ZBE8fHeQpF4w8tn85nbhLpn_YOpa_Leg5tm53NoISLOOxM7oTnnZDekWJlb0TIVU/exec";
-    
-// Busca a chave salva no seu navegador
-    let GEMINI_API_KEY = localStorage.getItem('minha_chave_gemini');
 
-    // Se não tiver chave salva, ele abre uma janelinha perguntando
-    if (!GEMINI_API_KEY) {
-      GEMINI_API_KEY = prompt("🌻 Bem-vinda! Cole sua chave do Gemini aqui uma única vez para salvar no seu navegador:");
-      if (GEMINI_API_KEY) {
-        localStorage.setItem('minha_chave_gemini', GEMINI_API_KEY);
-      }
-    }
-
-    // ==========================================
-    // 2. FUNÇÃO DA INTELIGÊNCIA ARTIFICIAL
-    // ==========================================
-    async function gerarDescricaoIA() {
-      const nomeProduto = document.getElementById('nome').value;
-      const categoria = document.getElementById('categoria').value;
-      const msg = document.getElementById('mensagem');
-      const campoDescricao = document.getElementById('descricao');
-      
-      if (!nomeProduto) {
-        msg.textContent = "🌻 Preencha o 'Nome do Produto' primeiro!";
-        msg.style.color = "#d9534f";
-        return;
-      }
-
-      msg.textContent = "⏳ O Gemini está escrevendo a descrição...";
-      msg.style.color = "#666";
-
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-      const prompt = `Escreva uma descrição muito curta (máximo de 2 linhas), acolhedora e delicada para o produto "${nomeProduto}" da categoria "${categoria}". O texto deve ter um tom que envolva fé, cuidado, família ou bem-estar, combinando com o projeto cristão 'Girassóis para o Céu'. Não use aspas no início ou no fim do texto.`;
-
-      try {
-        const resposta = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }]
-          })
-        });
-
-        const dados = await resposta.json();
-
-        if (dados.error) {
-          console.error(dados.error);
-          msg.textContent = "❌ Erro na API da IA. Verifique sua chave.";
-          msg.style.color = "red";
-          return;
-        }
-
-        const textoGerado = dados.candidates[0].content.parts[0].text;
-        campoDescricao.value = textoGerado.trim();
-        
-        msg.textContent = "✨ Descrição gerada com sucesso!";
-        msg.style.color = "green";
-
-      } catch (erro) {
-        console.error("Erro na comunicação com a IA:", erro);
-        msg.textContent = "❌ Falha ao conectar com o Gemini.";
-        msg.style.color = "red";
-      }
-    }
-
-
-    // ==========================================
-    // 3. FUNÇÃO DE SALVAR NA PLANILHA
-    // ==========================================
     document.getElementById('formProduto').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -246,7 +163,7 @@
         msg.textContent = "✅ Produto enviado! (Verifique a planilha)";
         msg.style.color = "green";
         document.getElementById('formProduto').reset();
-        console.error("Detalhe do erro de leitura:", err);
+        console.error("Detalhe:", err);
       } finally {
         btn.disabled = false;
         setTimeout(() => { msg.textContent = ""; }, 5000);
